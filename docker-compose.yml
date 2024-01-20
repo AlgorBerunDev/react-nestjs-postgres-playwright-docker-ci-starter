@@ -1,0 +1,68 @@
+version: "3"
+
+services:
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile.production
+    container_name: ${PROJECT_NAME}-dashboard
+    command: npm run start
+    environment:
+      - WDS_SOCKET_PORT=0
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./dashboard/src:/usr/src/app/src
+    restart: unless-stopped
+    networks:
+      - mohirdev-docker-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.production
+    container_name: ${PROJECT_NAME}-docker-api
+    command: npm run start:dev
+    volumes:
+      - "./backend:/usr/src/app"
+      - "node_modules:/usr/src/app/node_modules"
+    restart: unless-stopped
+    environment:
+      - PORT=3001
+      - HOST=http://localhost:3001
+      - MONGO_URL=mongodb://api_db:27017/api
+      - SECRET_KEY=mysecretkey
+    depends_on:
+      - backend_db
+    networks:
+      - mohirdev-docker-network
+
+  backend_db:
+    image: mongo:latest
+    container_name: ${PROJECT_NAME}-docker-api-db
+    volumes:
+      - mohirdev_mongodb_api:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - mohirdev-docker-network
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: ${PROJECT_NAME}-docker-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/production.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - dashboard
+      # - api
+    networks:
+      - mohirdev-docker-network
+
+volumes:
+  mohirdev_mongodb_api:
+  node_modules:
+networks:
+  mohirdev-docker-network:
+    driver: bridge

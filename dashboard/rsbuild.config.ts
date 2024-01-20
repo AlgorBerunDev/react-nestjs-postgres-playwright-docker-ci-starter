@@ -1,6 +1,8 @@
-import { defineConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
+import { defineConfig } from "@rsbuild/core";
+import { pluginReact } from "@rsbuild/plugin-react";
 
-export default defineConfig({
+const config = defineConfig({
   plugins: [pluginReact()],
 });
+console.log(config);
+export default { ...config, dev: { client: { port: 80 } } };
