@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "migrate": "docker-compose exec backend npx prisma migrate deploy",
+    "migrate:dev": "docker-compose exec backend npx prisma migrate dev",
+    "generate": "docker-compose exec backend npx prisma generate"
+  }
+}
