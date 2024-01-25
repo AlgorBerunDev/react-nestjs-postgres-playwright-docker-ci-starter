@@ -50,4 +50,14 @@ jobs:
           docker-compose -f docker-compose.yml up -d
 
       - name: Run database migration
+        env:
+          PROJECT_NAME: rnpp
+          BACKEND_HOST: https://mohirdev-docker.stage
+          BACKEND_SECRET_KEY: mysecretkey
+          DB_USER: user
+          DB_PASSWORD: 12345678
+          DB_NAME: mydatabase
+          PG_ADMIN_EMAIL: admin@admin.com
+          PG_ADMIN_PASSWORD: admin
+          PG_ADMIN_PORT: 80
         run: docker-compose exec backend npx prisma migrate deploy
