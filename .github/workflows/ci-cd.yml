@@ -14,3 +14,6 @@ jobs:
 
       - name: Run a one-line script
         run: ls -al
+
+      - name: Print location of project
+        run: pwd
