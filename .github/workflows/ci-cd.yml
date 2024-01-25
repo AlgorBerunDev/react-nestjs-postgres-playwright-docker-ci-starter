@@ -17,3 +17,14 @@ jobs:
 
       - name: Print location of project
         run: pwd
+
+      - name: Print git branch version
+        run: git branch -v
+
+      - name: Build Docker Compose Services
+        run: docker-compose -f docker-compose.yml build
+
+      - name: Deploy to Server
+        run: |
+          docker-compose -f docker-compose.yml down
+          docker-compose -f docker-compose.yml up -d
