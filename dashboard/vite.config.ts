@@ -10,5 +10,8 @@ export default defineConfig({
       port: process.env.WDS_SOCKET_PORT ? parseInt(process.env.WDS_SOCKET_PORT) : 3000,
     },
   },
+  preview: {
+    port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
+  },
   clearScreen: false,
 });
