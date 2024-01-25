@@ -52,8 +52,6 @@ services:
       - ./db/data:/var/lib/postgresql/data
       - ./db/backups:/backups
       - ./db/logs:/var/log
-    ports:
-      - "5432:5432"
     networks:
       - mohirdev-docker-network
 
@@ -68,14 +66,12 @@ services:
       - db
     networks:
       - mohirdev-docker-network
-    ports:
-      - "8080:80"
 
   nginx:
     image: nginx:stable-alpine
     container_name: ${PROJECT_NAME}-docker-nginx
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       - ./nginx/production.conf:/etc/nginx/conf.d/nginx.conf
     depends_on:
