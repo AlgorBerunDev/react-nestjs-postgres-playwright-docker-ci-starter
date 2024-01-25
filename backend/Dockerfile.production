@@ -14,4 +14,6 @@ RUN apt-get update && apt-get install -y build-essential gcc g++ make python3 py
 COPY . .
 
 RUN npx prisma generate
+RUN npm run build
+RUN npx prisma db push
 RUN npx prisma migrate deploy
