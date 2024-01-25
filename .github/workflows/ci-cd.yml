@@ -13,4 +13,41 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run a one-line script
-        run: echo "Hello, World! The runner is working!"
+        run: ls -al
+
+      - name: Print location of project
+        run: pwd
+
+      - name: Print git branch version
+        run: git branch -v
+
+      - name: Build Docker Compose Services
+        env:
+          PROJECT_NAME: rnpp
+          BACKEND_HOST: https://mohirdev-docker.stage
+          BACKEND_SECRET_KEY: mysecretkey
+          DB_USER: user
+          DB_PASSWORD: 12345678
+          DB_NAME: mydatabase
+          PG_ADMIN_EMAIL: admin@admin.com
+          PG_ADMIN_PASSWORD: admin
+          PG_ADMIN_PORT: 80
+        run: docker-compose -f docker-compose.production.yml build
+
+      - name: Deploy to Server
+        env:
+          PROJECT_NAME: rnpp
+          BACKEND_HOST: https://mohirdev-docker.stage
+          BACKEND_SECRET_KEY: mysecretkey
+          DB_USER: user
+          DB_PASSWORD: 12345678
+          DB_NAME: mydatabase
+          PG_ADMIN_EMAIL: admin@admin.com
+          PG_ADMIN_PASSWORD: admin
+          PG_ADMIN_PORT: 80
+        run: |
+          docker-compose -f docker-compose.production.yml down
+          docker-compose -f docker-compose.production.yml up -d
+
+      - name: Run database migration
+        run: docker-compose -f docker-compose.production.yml exec -T backend npx prisma migrate deploy

@@ -6,17 +6,15 @@ services:
       context: ./dashboard
       dockerfile: Dockerfile.production
     container_name: ${PROJECT_NAME}-dashboard
-    command: npm run dev
+    command: npm run preview
     environment:
       - WDS_SOCKET_PORT=0
       - PORT=8080
-    stdin_open: true
-    tty: true
     volumes:
       - ./dashboard/src:/usr/src/app/src
     restart: unless-stopped
     networks:
-      - mohirdev-docker-network
+      - rnpp-network
     depends_on:
       - backend
 
@@ -25,7 +23,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile.production
     container_name: ${PROJECT_NAME}-docker-api
-    command: npm run start:dev
+    command: npm run start
     volumes:
       # - "./backend:/usr/src/app"
       - "node_modules:/usr/src/app/node_modules"
@@ -38,7 +36,7 @@ services:
     depends_on:
       - db
     networks:
-      - mohirdev-docker-network
+      - rnpp-network
 
   db:
     build:
@@ -49,14 +47,11 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     volumes:
-      # - ./db/data:/var/lib/postgresql/data
-      # - ./db/backups:/backups
-      # - ./db/logs:/var/log
       - db_data:/var/lib/postgresql/data
       - db_backups:/backups
       - db_logs:/var/log
     networks:
-      - mohirdev-docker-network
+      - rnpp-network
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -68,7 +63,7 @@ services:
     depends_on:
       - db
     networks:
-      - mohirdev-docker-network
+      - rnpp-network
 
   nginx:
     image: nginx:stable-alpine
@@ -81,7 +76,7 @@ services:
       - dashboard
       - backend
     networks:
-      - mohirdev-docker-network
+      - rnpp-network
 
 volumes:
   node_modules:
@@ -89,5 +84,5 @@ volumes:
   db_backups:
   db_logs:
 networks:
-  mohirdev-docker-network:
+  rnpp-network:
     driver: bridge
