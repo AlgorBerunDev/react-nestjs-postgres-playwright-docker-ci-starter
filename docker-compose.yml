@@ -27,7 +27,7 @@ services:
     container_name: ${PROJECT_NAME}-docker-api
     command: npm run start:dev
     volumes:
-      - "./backend:/usr/src/app"
+      # - "./backend:/usr/src/app"
       - "node_modules:/usr/src/app/node_modules"
     restart: unless-stopped
     environment:
