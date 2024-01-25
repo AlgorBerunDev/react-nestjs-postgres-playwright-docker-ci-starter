@@ -51,7 +51,7 @@ services:
       - db_backups:/backups
       - db_logs:/var/log
     networks:
-      - mohirdev-docker-network
+      - rnpp-network
 
   pgadmin:
     image: dpage/pgadmin4:latest
