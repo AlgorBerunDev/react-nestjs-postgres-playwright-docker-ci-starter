@@ -32,7 +32,7 @@ jobs:
           PG_ADMIN_EMAIL: admin@admin.com
           PG_ADMIN_PASSWORD: admin
           PG_ADMIN_PORT: 80
-        run: docker-compose -f docker-compose.yml build
+        run: docker-compose -f docker-compose.production.yml build
 
       - name: Deploy to Server
         env:
@@ -46,8 +46,8 @@ jobs:
           PG_ADMIN_PASSWORD: admin
           PG_ADMIN_PORT: 80
         run: |
-          docker-compose -f docker-compose.yml down
-          docker-compose -f docker-compose.yml up -d
+          docker-compose -f docker-compose.production.yml down
+          docker-compose -f docker-compose.production.yml up -d
 
       - name: Run database migration
-        run: docker-compose exec -T backend npx prisma migrate deploy
+        run: docker-compose -f docker-compose.production.yml exec -T backend npx prisma migrate deploy
