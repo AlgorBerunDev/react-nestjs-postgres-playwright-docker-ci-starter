@@ -49,9 +49,12 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     volumes:
-      - ./db/data:/var/lib/postgresql/data
-      - ./db/backups:/backups
-      - ./db/logs:/var/log
+      # - ./db/data:/var/lib/postgresql/data
+      # - ./db/backups:/backups
+      # - ./db/logs:/var/log
+      - db_data:/var/lib/postgresql/data
+      - db_backups:/backups
+      - db_logs:/var/log
     networks:
       - mohirdev-docker-network
 
@@ -82,6 +85,9 @@ services:
 
 volumes:
   node_modules:
+  db_data:
+  db_backups:
+  db_logs:
 networks:
   mohirdev-docker-network:
     driver: bridge
