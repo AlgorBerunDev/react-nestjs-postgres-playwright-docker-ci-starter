@@ -41,7 +41,6 @@ export class AuthController {
     return body;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('signout')
   async signOut(@Res({ passthrough: true }) response: Response) {
     response.clearCookie('Authentication');
