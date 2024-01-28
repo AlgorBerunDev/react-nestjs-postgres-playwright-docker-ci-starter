@@ -12,7 +12,7 @@ import { PrismaService } from 'nestjs-prisma';
 export class IsExist implements ValidatorConstraintInterface {
   constructor(private prisma: PrismaService) {}
   async validate(value: string, validationArguments: ValidationArguments) {
-    const model = validationArguments.constraints[0];
+    const model = validationArguments.constraints[0] as string;
     const field = validationArguments.constraints[1]
       ? validationArguments.constraints[1]
       : validationArguments.property;

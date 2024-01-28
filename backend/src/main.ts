@@ -24,6 +24,7 @@ async function bootstrap() {
     }),
     new I18nValidationPipe(),
   );
+
   const configService = app.get(ConfigService);
   const port = configService.get('PORT') || 3000;
 

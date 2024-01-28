@@ -9,7 +9,7 @@ export class UserService {
 
   create(user: CreateUserDto): Promise<User> {
     const data = user as User;
-    return this.prisma.user.create({ data: { ...data, roles: ['public'] } });
+    return this.prisma.user.create({ data: { ...data } });
   }
 
   users() {
@@ -26,8 +26,8 @@ export class UserService {
     return this.prisma.user.findUnique({ where: { contact: identity } });
   }
 
-  async isAdmin(username) {
-    const user = await this.prisma.user.findFirst({ where: { username } });
-    return user.role === 'admin';
+  async isAdmin() {
+    // const user = await this.prisma.user.findFirst({ where: { username } });
+    return true;
   }
 }

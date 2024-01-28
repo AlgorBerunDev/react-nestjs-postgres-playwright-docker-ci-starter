@@ -4,7 +4,6 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import * as multer from 'multer';
 
 @ValidatorConstraint({ name: 'isImage', async: false })
 export class IsImageConstraint implements ValidatorConstraintInterface {

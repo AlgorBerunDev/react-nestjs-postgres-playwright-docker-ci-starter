@@ -39,7 +39,7 @@ export class PrismaService
   }
 
   async enableShutdownHooks(app: INestApplication | INestMicroservice) {
-    this.$on('beforeExit', async () => {
+    this.$on('error', async () => {
       await app.close();
     });
   }

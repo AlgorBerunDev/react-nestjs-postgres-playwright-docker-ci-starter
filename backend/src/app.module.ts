@@ -6,16 +6,13 @@ import { APP_FILTER, HttpAdapterHost } from '@nestjs/core';
 import { UserModule } from './modules/user/user.module';
 import { PrismaService } from 'nestjs-prisma';
 import { AuthModule } from './modules/auth/auth.module';
-import { ProductModule } from './modules/product/product.module';
-import { OrderModule } from './modules/order/order.module';
-import { CategoryModule } from './modules/category/category.module';
-import { ContentModule } from './modules/content/content.module';
-import { PaymentsModule } from './modules/payments/payments.module';
 import * as path from 'path';
 import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     PrismaModule.forRoot({ isGlobal: true }),
     I18nModule.forRootAsync({
       resolvers: [AcceptLanguageResolver],
@@ -30,11 +27,6 @@ import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
     }),
     UserModule,
     AuthModule,
-    ProductModule,
-    OrderModule,
-    CategoryModule,
-    ContentModule,
-    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [

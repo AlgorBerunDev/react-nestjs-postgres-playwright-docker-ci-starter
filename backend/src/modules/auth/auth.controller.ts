@@ -1,43 +1,63 @@
 import {
-  Controller,
   Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
   Post,
-  Request,
-  UseGuards,
-  Get,
   Req,
-  UnauthorizedException,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { UserEntity } from '../user/user.entity';
 import { AuthService } from './auth.service';
+import { SignUpDto, SignInDto } from './auth.dto';
+import { Request, Response } from 'express';
 import { LocalAuthGuard } from './local-auth.guard';
-import { CreateUserDto } from '../user/dto/create-user.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
-@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
-  @Post('login')
-  @ApiCreatedResponse({ type: UserEntity })
-  login(@Request() req: any) {
-    return this.authService.login(req.user);
+  @Post('signup')
+  async signUp(
+    @Body() signUpDto: SignUpDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const result = await this.authService.signUp(signUpDto);
+    response.cookie('Authentication', result.cookie, result.cookieOptions);
+    return result.body;
   }
 
-  @Post('registration')
-  @ApiCreatedResponse({ type: UserEntity })
-  registration(@Body() createUserDto: CreateUserDto) {
-    return this.authService.registration(createUserDto);
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(LocalAuthGuard)
+  @Post('signin')
+  async signIn(
+    @Body() signInDto: SignInDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const { cookie, cookieOptions, body } =
+      await this.authService.signIn(signInDto);
+    response.cookie('Authentication', cookie, cookieOptions);
+    return body;
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('is_auth')
-  async isAuth(@Req() req: any) {
-    const isAdmin = await this.authService.isAdmin(req.user.username);
-    if (!isAdmin) throw new UnauthorizedException();
-    return { message: 'token is life' };
+  @Post('signout')
+  async signOut(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('Authentication');
+    return { message: 'Вы успешно вышли из системы.' };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('refresh')
+  async refresh(
+    @Req() req: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const { cookie, cookieOptions, body } = await this.authService.refreshToken(
+      req.user,
+    );
+    response.cookie('Authentication', cookie, cookieOptions);
+    return body;
   }
 }
