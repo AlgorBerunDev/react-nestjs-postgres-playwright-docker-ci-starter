@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'nestjs-prisma';
 import { SignUpDto, SignInDto } from './auth.dto';
 import * as bcrypt from 'bcrypt';
+import Role from '@/src/lib/enums/roles.enum';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,9 @@ export class AuthService {
           contact,
           username,
           password: hashedPassword,
+          roles: {
+            connect: [{ name: Role.RegisteredUser }],
+          },
         },
       });
 
@@ -32,7 +36,6 @@ export class AuthService {
         cookie: token,
         cookieOptions: {
           httpOnly: true,
-          // Установите другие необходимые параметры для cookie здесь
         },
       };
     } catch (error) {
@@ -72,13 +75,11 @@ export class AuthService {
       cookie: token,
       cookieOptions: {
         httpOnly: true,
-        // Установите другие необходимые параметры для cookie здесь
       },
     };
   }
 
   async refreshToken(user: any): Promise<any> {
-    // Предполагаем, что у пользователя есть поле с refresh token и логика его обновления
     const existingUser = await this.prismaService.user.findUnique({
       where: { id: user.sub },
     });
@@ -97,7 +98,6 @@ export class AuthService {
       cookie: newToken,
       cookieOptions: {
         httpOnly: true,
-        // Установите другие необходимые параметры для cookie здесь
       },
     };
   }
