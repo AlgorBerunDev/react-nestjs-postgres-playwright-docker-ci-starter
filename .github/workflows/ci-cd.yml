@@ -25,7 +25,8 @@ jobs:
         env:
           PROJECT_NAME: rnpp
           BACKEND_HOST: https://mohirdev-docker.stage
-          BACKEND_SECRET_KEY: mysecretkey
+          BACKEND_JWT_SECRET_KEY: mysecretkey
+          BACKEND_JWT_EXPIRES_IN: 90d
           DB_USER: user
           DB_PASSWORD: 12345678
           DB_NAME: mydatabase
@@ -38,7 +39,8 @@ jobs:
         env:
           PROJECT_NAME: rnpp
           BACKEND_HOST: https://mohirdev-docker.stage
-          BACKEND_SECRET_KEY: mysecretkey
+          BACKEND_JWT_SECRET_KEY: mysecretkey
+          BACKEND_JWT_EXPIRES_IN: 90d
           DB_USER: user
           DB_PASSWORD: 12345678
           DB_NAME: mydatabase
