@@ -4,7 +4,7 @@ services:
   dashboard:
     build:
       context: ./dashboard
-      dockerfile: Dockerfile.production
+      dockerfile: Dockerfile.development
     container_name: ${PROJECT_NAME}-dashboard
     command: npm run dev
     environment:
@@ -23,11 +23,11 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile.production
+      dockerfile: Dockerfile.development
     container_name: ${PROJECT_NAME}-docker-api
     command: npm run start:dev
     volumes:
-      # - "./backend:/usr/src/app"
+      - "./backend:/usr/src/app"
       - "node_modules:/usr/src/app/node_modules"
     restart: unless-stopped
     environment:
@@ -49,12 +49,9 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     volumes:
-      # - ./db/data:/var/lib/postgresql/data
-      # - ./db/backups:/backups
-      # - ./db/logs:/var/log
-      - db_data:/var/lib/postgresql/data
-      - db_backups:/backups
-      - db_logs:/var/log
+      - ./db/data:/var/lib/postgresql/data
+      - ./db/backups:/backups
+      - ./db/logs:/var/log
     networks:
       - mohirdev-docker-network
 
@@ -76,7 +73,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./nginx/production.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/local.conf:/etc/nginx/conf.d/nginx.conf
     depends_on:
       - dashboard
       - backend
