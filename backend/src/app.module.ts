@@ -19,7 +19,7 @@ import { ConfigModule } from '@nestjs/config';
       useFactory: () => ({
         fallbackLanguage: 'en',
         loaderOptions: {
-          path: path.join(__dirname, '..', 'i18n'),
+          path: path.join(__dirname, '../..', 'i18n'),
           watch: true,
         },
         logging: true,

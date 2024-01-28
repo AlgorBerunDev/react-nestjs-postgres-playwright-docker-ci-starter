@@ -1,3 +1,0 @@
-{
-  "IMPOSSIBLE_TO_DELETE": "Before deleting this {modelName}, move the {fieldName} that belong to this {modelName}."
-}
