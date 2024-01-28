@@ -73,7 +73,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./nginx/local.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/development.conf:/etc/nginx/conf.d/nginx.conf
     depends_on:
       - dashboard
       - backend
