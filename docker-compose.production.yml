@@ -25,13 +25,13 @@ services:
     container_name: ${PROJECT_NAME}-docker-api
     command: npm run start
     volumes:
-      # - "./backend:/usr/src/app"
       - "node_modules:/usr/src/app/node_modules"
     restart: unless-stopped
     environment:
       - PORT=8081
       - HOST=${BACKEND_HOST}
-      - SECRET_KEY=${BACKEND_SECRET_KEY}
+      - JWT_SECRET_KEY=${BACKEND_JWT_SECRET_KEY}
+      - JWT_EXPIRES_IN=${BACKEND_JWT_EXPIRES_IN}
       - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
     depends_on:
       - db
